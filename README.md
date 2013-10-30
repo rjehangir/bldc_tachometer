@@ -1,7 +1,11 @@
 bldc-tachometer
 ===============
 
-An Arduino based brushless motor tachometer that uses one of the three motor wires as a signal. The signal to each wire on a brushless motor is a sinusoidal wave with frequency equal to (revolutions per second)*(number of poles) Hz. If the frequency can be measured, the motor RPM can be measured. 
+An Arduino based brushless motor tachometer that uses one of the three motor wires as a signal. The signal to each wire on a brushless motor is a sinusoidal wave with frequency of 
+
+frequency = (revolutions per second)*(number of poles) Hz. 
+
+If the frequency can be measured, the motor RPM can be measured. 
 
 However, brushless motor controllers power the motor with a high frequency PWM signal. The duty cycle of this signal determines the power transmitted to the motor. The PWM signal is not correlated with the RPM and it prevents the useful signal from being measured with a microcontroller interrupt. 
 
