@@ -1,11 +1,15 @@
-#include <WProgram.h>
+// Heading compatibility with all versions of the Arduino IDE. I am using 0022.
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
+#include "WProgram.h"
+#endif
 #include <util/atomic.h>
 
 #define NUMBER_OF_MOTOR_POLES 14
 
-#define SERVO1 9
-#define SERVO2 10
-#define TACHOMETER_INT 3
+#define PWM_PIN 9
+#define TACHOMETER_INT_PIN 3
 
 volatile uint32_t pulseCount = 0;
 volatile uint32_t pulseTimer = 0;
@@ -46,14 +50,13 @@ void setup() {
   Serial.println("start");
   
   // Initialize input/output pins
-  pinMode(SERVO1,OUTPUT);
-  pinMode(SERVO2,OUTPUT);
-  pinMode(TACHOMETER_INT,INPUT);
+  pinMode(PWM_PIN,OUTPUT);
+  pinMode(TACHOMETER_INT_PIN,INPUT);
   
-  // Initialize PWM output for 50 Hz
+  // Initialize PWM output for 50 Hz (Digital pin 9)
   TCCR1A = (1<<WGM11)|(1<<COM1A1)|(1<<COM1B1);
   TCCR1B = (1<<WGM13)|(1<<WGM12)|(1<<CS11);
-  ICR1 = 10000; // CPU/prescaler/frequency = 16000000/8/200 // 200 Hz PWM rate
+  ICR1 = 10000; // CPU/prescaler/frequency = 16000000/8/50 = 10000 // 50 Hz PWM rate
   
   // Attach the interrupt pin (INT1, Arduino Pin 3)
   EICRA = (EICRA & ~((1 << ISC10) | (1 << ISC11))) | (RISING << ISC10);
